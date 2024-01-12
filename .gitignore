@@ -1,0 +1,19 @@
+# 忽略秘钥文件
+/notion/notion_token.py
+
+# 忽略 Python 编译和运行时产生的文件
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# 忽略操作系统生成的文件
+.DS_Store
+Thumbs.db
+
+# 忽略虚拟环境和依赖
+.env
+.venv
+env/
+venv/
+ENV/
