@@ -48,6 +48,11 @@ def split_markdown(markdown):
 
 
 def get_movie_info(subject_id):
+    """
+    获取影视信息
+    :param subject_id: https://movie.douban.com/subject/{subject_id}
+    :return: 信息
+    """
     url = Movie.base_url + subject_id
     html_tree = etree.HTML(client.get(url).text)
     # --名称

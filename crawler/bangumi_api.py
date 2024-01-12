@@ -36,7 +36,9 @@ class AnimeApi:
 
 def get_bangumi_info(subject_id):
     """
-    #api文档说明: https://bangumi.github.io/api/
+    api文档说明: https://bangumi.github.io/api/
+    从bangumi提供的接口中获取信息
+    :param subject_id: https://api.bgm.tv/v0/subjects/{subject_id}
     """
     url = AnimeApi.base_url + subject_id
     data_obj = client.get(url).json()

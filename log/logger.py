@@ -2,6 +2,11 @@ import logging
 
 
 def setup_logging(log_file='./log/logging.log'):
+    """
+    对日志进行基本的设置
+    :param log_file: 产生的日志文件名与文件位置
+    :return: 日志logging
+    """
     # 创建 Formatter 实例
     formatter = logging.Formatter('%(levelname)-8s %(message)s')
     # 创建 FileHandler 实例

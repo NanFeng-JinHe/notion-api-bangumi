@@ -1,5 +1,3 @@
-# 安装并导入html解析模块(xpath)
-# pip3 install lxml
 from lxml import etree
 from util import utils, client
 

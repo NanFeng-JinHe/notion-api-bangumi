@@ -1,9 +1,5 @@
-# pip install lxml
 from lxml import etree
-# pip install html2text
-# 安装html转markdown的模块
 import html2text
-# 时间处理
 from datetime import datetime
 
 

@@ -12,6 +12,19 @@ headers = {
 
 
 def update_notion_database_page(title, alias, url, year, area, type, tags, summary, children):
+    """
+    将信息上传到notion
+    :param title: 标题
+    :param alias: 别名
+    :param url: 原文地址(数据源)
+    :param year: 年份
+    :param area: 上映地区
+    :param type: 类型
+    :param tags: 标签列表
+    :param summary: 简介
+    :param children: 详细信息
+    :return: response响应
+    """
     # 构建tags
     tags_json = []
     for tag in tags:

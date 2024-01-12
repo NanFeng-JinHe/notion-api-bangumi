@@ -1,11 +1,11 @@
+# 用于统计耗时
+import time
 # 豆瓣与bangumi网站的视频信息id
 from subject import bangumi_subject, douban_movie_subject
 # 数据来源(解析网页的脚本)
 from crawler import bangumi_api, bangumi, douban
 # 构建notion-api请求格式的脚本
 from notion import build_notion_page as bnp, build_notion_children as bnc
-# 用于统计耗时
-import time
 # 用于日志
 from log import logger
 log = logger.setup_logging(log_file='./log/logging.log')
@@ -14,15 +14,28 @@ log = logger.setup_logging(log_file='./log/logging.log')
 def main():
     print("数据源:【1:豆瓣】【2:bangumi】【3:豆瓣&bangumi】")
     index = input()
-    if index == "1":
+    if index in ["1", "3"]:
         douban_parse()
-    elif index == "2":
-        bangumi_parse()
-    else:
-        douban_parse()
+    if index in ["2", "3"]:
         bangumi_parse()
 
+
+def timing(start_time):
+    """耗时统计"""
+    # 记录结束时间
+    end_time = time.time()  # 记录结束时间
+    elapsed_time = end_time - start_time  # 计算耗时
+    log.info(f"总耗时: {elapsed_time:.2f} 秒")
+    print(f"总耗时: {elapsed_time:.2f} 秒")
+
+
 def parse_and_upload(data_obj, title, url, alias=''):
+    """
+    :param data_obj: 封装后的数据
+    :param title: 标题
+    :param url: 原文地址(数据源)
+    :param alias: 别名
+    """
     children = bnc.build_children(data_obj.cover, data_obj.details)
     response = bnp.update_notion_database_page(
         title,
@@ -46,10 +59,14 @@ def parse_and_upload(data_obj, title, url, alias=''):
         print("\033[32m=====>插入成功:\033[0m", title)
 
 
-# 从bangumi网站爬取信息并上传到notion
 def bangumi_parse():
+    """
+    从bangumi网站爬取信息并上传到notion
+    """
     for anime in bangumi_subject.a_list:
-        start_time = time.time()  # 记录开始时间
+        # 记录开始时间
+        start_time = time.time()
+
         # 从bangumi中爬取数据
         data_obj = bangumi.get_bangumi_info(anime)
         # 从bangumi-api中解析数据
@@ -63,25 +80,27 @@ def bangumi_parse():
         # 上传到notion
         url = data_obj.base_url + anime
         parse_and_upload(data_obj, title, url,  alias)
-        end_time = time.time()  # 记录结束时间
-        elapsed_time = end_time - start_time  # 计算耗时
-        log.info(f"耗时: {elapsed_time:.2f} 秒")
-        print(f"耗时: {elapsed_time:.2f} 秒")
+
+        # 记录结束时间
+        timing(start_time)
 
 
-# 从douban网站爬取信息并上传到notion
 def douban_parse():
+    """
+    从douban网站爬取信息并上传到notion
+    """
     for movie in douban_movie_subject.m_list:
-        start_time = time.time()  # 记录开始时间
+        # 记录开始时间
+        start_time = time.time()
+
         # 从douban中爬取数据
         data_obj = douban.get_movie_info(movie)
         # 上传到notion
         url = data_obj.base_url + movie
         parse_and_upload(data_obj, data_obj.title, url)
-        end_time = time.time()  # 记录结束时间
-        elapsed_time = end_time - start_time  # 计算耗时
-        log.info(f"耗时: {elapsed_time:.2f} 秒")
-        print(f"耗时: {elapsed_time:.2f} 秒")
+
+        # 记录结束时间
+        timing(start_time)
 
 
 if __name__ == "__main__":
