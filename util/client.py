@@ -3,17 +3,15 @@
 import requests
 from requests.adapters import HTTPAdapter
 import time
+import random
+from util import header
+header_list = header.header_list
 
-# 默认请求头
-DEFAULT_HEADER = {
-    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
-                  "AppleWebKit/537.36 (KHTML, like Gecko) "
-                  "Chrome/54.0.2840.99 Safari/537.36"
-}
-# 超时时间
-TIMEOUT = 20
+# 超时时间(插入信息都比较多需要更多的Read time)
+# (连接超时, 读取超时)
+TIMEOUT = 50  # (3.07, 25)
 # 超时重试次数
-MAX_RETRIES = 5
+MAX_RETRIES = 3
 
 
 def create_session():
@@ -28,8 +26,9 @@ def create_session():
 def retry_request(session, url, method='get', headers=None, data=None, json=None):
     """尝试进行请求，支持重试机制"""
     if headers is None:
-        headers = DEFAULT_HEADER
-
+        headers = {
+            "User-Agent": random.choice(header_list),
+        }
     for attempt in range(MAX_RETRIES):
         try:
             if method.lower() == 'get':
@@ -49,7 +48,6 @@ def retry_request(session, url, method='get', headers=None, data=None, json=None
             else:
                 print("已达到最大重试次数, 正在退出....")
                 break
-
     print(time.strftime('%Y-%m-%d %H:%M:%S'))
 
 
@@ -63,5 +61,4 @@ def post(url, data=None, json=None, headers=None):
     """发起 POST 请求"""
     session = create_session()
     return retry_request(session, url, method='post', headers=headers, data=data, json=json)
-
 
