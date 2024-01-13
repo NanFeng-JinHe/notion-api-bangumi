@@ -97,7 +97,7 @@ def douban_parse():
         data_obj = douban.get_movie_info(movie)
         # 上传到notion
         url = data_obj.base_url + movie
-        parse_and_upload(data_obj, data_obj.title, url)
+        parse_and_upload(data_obj, data_obj.title, url, data_obj.alias)
 
         # 记录结束时间
         timing(start_time)

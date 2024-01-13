@@ -7,7 +7,7 @@ class AnimeApi:
     Attributes:
     - base_url (str) : 信息来源站点
     - date(str): 上映日期 2019-9-23
-    - area(str): 上映地区 固定为"日本"
+    - area(list(str)): 上映地区 固定为"日本"
     - title (str): 标题
     - name_cn (str): 译名
     - cover (str): 封面
@@ -46,7 +46,7 @@ def get_bangumi_info(subject_id):
     date = data_obj['date']
     # AnimeApi.date = utils.date_str_to_ios_8601(date)
     AnimeApi.date = date
-    AnimeApi.area = "日本"
+    AnimeApi.area = ["日本"]
     # 封面# small\grid\large\medium\common
     AnimeApi.cover = data_obj['images']['common']
     # 简介

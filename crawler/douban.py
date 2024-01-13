@@ -9,8 +9,9 @@ class Movie:
     Attributes:
     - base_url (str) : 信息来源站点
     - date (str) : 上映日期
-    - area (str) : 上映地区
+    - area (list[str]) : 上映地区
     - title (str) : 标题
+    - alias: (str): 别名
     - cover (str): 封面
     - summary (str): 简介
     - tags (list[str]): 标签列表
@@ -19,8 +20,9 @@ class Movie:
     """
     base_url = 'https://movie.douban.com/subject/'
     date: str
-    area: str
+    area: list[str]
     title: str
+    alias: str
     cover: str
     summary: str
     tags: list[str]
@@ -85,15 +87,19 @@ def get_movie_info(subject_id):
     markdown = split_markdown(markdown[0])
     Movie.details = markdown
     # --日期地区
+    area_list = []
     date_area = html_tree.xpath('//*[@property="v:initialReleaseDate"]/text()')
-    # 定义正则表达式模式，用于匹配日期&地区
-    pattern = re.compile(r'(\d{4}-\d{2}-\d{2})\((.*)\)')
-    matches = pattern.findall(date_area[0])
-    for match in matches:
-        # Movie.date = utils.date_str_to_ios_8601(match[0])
-        Movie.date = match[0]
-        Movie.area = match[1]
-    # --类型固定为"电影"
+    for da in date_area:
+        # (年月日|年月|年)(地区)
+        pattern = re.compile(r'(\d{4}-\d{2}-\d{2}|\d{4}-\d{2}|\d{4})\((.*)\)')
+        matches = pattern.findall(da)
+        Movie.date = matches[0][0]
+        for match in matches:
+            Movie.area = match[1]
+            area_list.append(match[1])
+        Movie.area = area_list
+    Movie.alias = "".join(html_tree.xpath("//span[./text()='又名:']/following::text()[1]"))
+    # --类型固定为电影
     Movie.type = "电影"
     return Movie
 

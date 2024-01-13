@@ -26,12 +26,12 @@ def update_notion_database_page(title, alias, url, year, area, type, tags, summa
     :return: response响应
     """
     # 构建tags
-    tags_json = []
-    for tag in tags:
-        if tag != '':
-            tags_json.append({"name": tag})
-    # 解析网页
+    tags_json = [{"name": tag} for tag in tags if tag != '']
+    area_json = [{"name": a} for a in area if a != '']
+    # top250可以使用这个
+    # tags_json = [{"name": tag} for tag in tags if tag != ''] + [{"name": "top250"}]
 
+    # 解析网页
     p = {
         "parent": {
             "type": "database_id",
@@ -72,9 +72,7 @@ def update_notion_database_page(title, alias, url, year, area, type, tags, summa
                 "multi_select": tags_json
             },
             "地区": {
-                "multi_select": [
-                    {"name": area},
-                ],
+                "multi_select": area_json
             },
             "数据源": {
                 "url": url
