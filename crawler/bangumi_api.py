@@ -40,26 +40,27 @@ def get_bangumi_info(subject_id):
     从bangumi提供的接口中获取信息
     :param subject_id: https://api.bgm.tv/v0/subjects/{subject_id}
     """
+    animeapi = AnimeApi()
     url = AnimeApi.base_url + subject_id
     data_obj = client.get(url).json()
     # 日期
     date = data_obj['date']
     # AnimeApi.date = utils.date_str_to_ios_8601(date)
-    AnimeApi.date = date
-    AnimeApi.area = ["日本"]
+    animeapi.date = date
+    animeapi.area = ["日本"]
     # 封面# small\grid\large\medium\common
-    AnimeApi.cover = data_obj['images']['common']
+    animeapi.cover = data_obj['images']['common']
     # 简介
-    AnimeApi.summary = data_obj['summary']
+    animeapi.summary = data_obj['summary']
     # 原名
-    AnimeApi.title = data_obj['name']
+    animeapi.title = data_obj['name']
     # 中文译名
-    AnimeApi.name_cn = data_obj['name_cn']
+    animeapi.name_cn = data_obj['name_cn']
     # 标签
     tags_l = [item['name'] for item in data_obj['tags']]
-    AnimeApi.tags = (tags_l + [''] * 4)[:4]
+    animeapi.tags = (tags_l + [''] * 4)[:4]
     # 详细信息
-    AnimeApi.details = data_obj['infobox']
+    animeapi.details = data_obj['infobox']
     # for item in data_obj['infobox']:
     #     if isinstance(item['value'], list):
     #         print(item['key'])
@@ -67,21 +68,17 @@ def get_bangumi_info(subject_id):
     #             print(i['v'])
     #     else:
     #         print(item['key'], item['value'])
-    AnimeApi.type = data_obj['type']
-    if AnimeApi.type == '1':
-        AnimeApi.type = "书籍"
-    elif AnimeApi.type == '2':
-        AnimeApi.type = "动漫"
-    elif AnimeApi.type == '3':
-        AnimeApi.type = "音乐"
-    elif AnimeApi.type == '4':
-        AnimeApi.type = "游戏"
-    elif AnimeApi.type == '6':
-        AnimeApi.type = "三次元"
+    animeapi.type = data_obj['type']
+    if animeapi.type == '1':
+        animeapi.type = "书籍"
+    elif animeapi.type == '2':
+        animeapi.type = "动漫"
+    elif animeapi.type == '3':
+        animeapi.type = "音乐"
+    elif animeapi.type == '4':
+        animeapi.type = "游戏"
+    elif animeapi.type == '6':
+        animeapi.type = "三次元"
 
-    return AnimeApi
-
-
-
-
+    return animeapi
 

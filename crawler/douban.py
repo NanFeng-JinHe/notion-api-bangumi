@@ -55,18 +55,32 @@ def get_movie_info(subject_id):
     :param subject_id: https://movie.douban.com/subject/{subject_id}
     :return: 信息
     """
-    url = Movie.base_url + subject_id
-    html_tree = etree.HTML(client.get(url).text)
-    # --名称
-    Movie.title = "".join(html_tree.xpath('.//h1/span[1]/text()')[0])
-    # --封面
+    movie = Movie()
+    # 构建请求连接url
+    url = movie.base_url + subject_id
     cover_base_url = ("https://movie.douban.com/subject/" + subject_id +
                       "/photos?type=R&start=0&sortby=size&size=a&subtype=o")
-    cover_tree = etree.HTML(client.get(cover_base_url).text)
+    # 发起请求
+    html_response = client.get(url)
+    cover_response = client.get(cover_base_url)
+    # 检测响应
+    if html_response.status_code != 200 or cover_response.status_code != 200:
+        return None
+    html_tree = etree.HTML(html_response.text)
+    h = html_tree.xpath('.//h1/span[1]/text()')
+    # 根据返回结果,尝试抓取标题,如果抓取失败则说明豆瓣返回200,但页面内容缺失
+    if len(h) <= 0:
+        return None
+
+    # =============解析数据=============
+    # --名称
+    movie.title = "".join(html_tree.xpath('.//h1/span[1]/text()')[0])
+    # --封面
+    cover_tree = etree.HTML(cover_response.text)
     cover_list = cover_tree.xpath('//*[@id="content"]//*/ul/li/@data-id')
     # l s m
     # https://img1.doubanio.com/view/photo/l/public/p2902597000.webp
-    Movie.cover = "".join("https://img1.doubanio.com/view/photo/l/public/p" + cover_list[0] + ".webp")
+    movie.cover = "".join("https://img1.doubanio.com/view/photo/l/public/p" + cover_list[0] + ".webp")
     # -- 简介
     summary = ''
     summary_list = html_tree.xpath("//*[@id='link-report-intra']/span/text()")
@@ -74,18 +88,18 @@ def get_movie_info(subject_id):
     for decoded_str in decoded_str_list:
         summary += decoded_str
     # 去除多余空格
-    Movie.summary = re.sub('\\s+', ' ', summary)
+    movie.summary = re.sub('\\s+', ' ', summary)
     # --标签
     tags_list = html_tree.xpath('//*[@property="v:genre"]/text()')
     # 获取前四个元素,如果不足四个使用''补充
     tags = (tags_list + [''] * 4)[:4]
-    Movie.tags = tags
+    movie.tags = tags
     # -- 详细信息
     details = html_tree.xpath('//*[@id="info"]')
     markdown = utils.html2markdown(details, 'href="/', 'href="https://movie.douban.com/')
     # 将返回的信息拆分成块
     markdown = split_markdown(markdown[0])
-    Movie.details = markdown
+    movie.details = markdown
     # --日期地区
     area_list = []
     date_area = html_tree.xpath('//*[@property="v:initialReleaseDate"]/text()')
@@ -93,17 +107,13 @@ def get_movie_info(subject_id):
         # (年月日|年月|年)(地区)
         pattern = re.compile(r'(\d{4}-\d{2}-\d{2}|\d{4}-\d{2}|\d{4})\((.*)\)')
         matches = pattern.findall(da)
-        Movie.date = matches[0][0]
+        movie.date = matches[0][0]
         for match in matches:
-            Movie.area = match[1]
+            movie.area = match[1]
             area_list.append(match[1])
-        Movie.area = area_list
-    Movie.alias = "".join(html_tree.xpath("//span[./text()='又名:']/following::text()[1]"))
+        movie.area = area_list
+    movie.alias = ",".join(html_tree.xpath("//span[./text()='又名:']/following::text()[1]"))
     # --类型固定为电影
-    Movie.type = "电影"
-    return Movie
-
-
-
-
+    movie.type = "电影"
+    return movie
 
