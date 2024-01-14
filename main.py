@@ -37,7 +37,7 @@ def menu_main(mode):
             thread_func(douban_parse, douban_fail_list, 3)
             print("最终失败列表:")
             for i in douban_fail_list:
-                print(f'\'{i.group()}\'')
+                print(f'\'{i}\'')
             log.error(douban_fail_list)
         if index in ["2", "3"]:
             thread_func(bangumi_parse, bangumi_subject.a_list, 20)
