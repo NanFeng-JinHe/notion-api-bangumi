@@ -1,3 +1,5 @@
+#!/usr/bin/python
+# -*- coding: UTF-8 -*-
 from lxml import etree
 import html2text
 from datetime import datetime

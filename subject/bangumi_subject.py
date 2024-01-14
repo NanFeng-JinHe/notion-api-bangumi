@@ -1,5 +1,7 @@
+#!/usr/bin/python
+# -*- coding: UTF-8 -*-
 """
-bangumi信息页面的subject_id(仅支持影视类型!!)
+bangumi信息页面的subject_id
 example:https://bgm.tv/subject/{subject_id}
         https://bgm.tv/subject/183878
         subject_id:183878

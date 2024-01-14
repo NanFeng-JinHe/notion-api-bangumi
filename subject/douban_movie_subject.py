@@ -1,3 +1,5 @@
+#!/usr/bin/python
+# -*- coding: UTF-8 -*-
 """
 豆瓣信息页面的subject_id(仅支持影视类型!!)
 example:https://movie.douban.com/subject/{subject_id}

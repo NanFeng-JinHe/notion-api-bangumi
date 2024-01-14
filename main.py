@@ -1,3 +1,5 @@
+#!/usr/bin/python
+# -*- coding: UTF-8 -*-
 import concurrent.futures
 # 用于统计耗时
 # 豆瓣与bangumi网站的视频信息id

@@ -1,3 +1,5 @@
+#!/usr/bin/python
+# -*- coding: UTF-8 -*-
 # 收集到的常用Header
 header_list = [
         # browsers
