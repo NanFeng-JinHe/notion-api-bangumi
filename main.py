@@ -40,7 +40,7 @@ def menu_main(mode):
                 print(f'\'{i}\'')
             log.error(douban_fail_list)
         if index in ["2", "3"]:
-            thread_func(bangumi_parse, bangumi_subject.a_list, 20)
+            thread_func(bangumi_parse, bangumi_subject.a_list, 3)
     elif mode == '2':
         index = input("数据源:\n【1:豆瓣】\n【2:bangumi】\n")
         if index == '1':
