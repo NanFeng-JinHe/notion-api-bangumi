@@ -73,8 +73,11 @@ def parse_and_upload(data_obj, title, url, alias=''):
         data_obj.summary,
         children,
     )
-    if response.status_code != 200:
-        log.error(response.json())
+    if response is None:
+        log_list = ["=====>插入失败:notion响应内容为空", title]
+        log.error(''.join(log_list))
+        print("\033[31m插入失败:notion响应内容为空\033[0m", title)
+    elif response.status_code != 200:
         log_list = ["=====>插入失败:", response.status_code, title]
         log.error(''.join(log_list))
         print("\033[31m=====>插入失败:\033[0m", response.status_code, title)
