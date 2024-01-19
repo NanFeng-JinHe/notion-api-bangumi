@@ -6,7 +6,7 @@
 - 数据来源为[bangumi](https://bangumi.tv/)与[豆瓣电影](https://movie.douban.com/)
 
 
-
+- [notion页面的效果预览](https://pie-saturday-9af.notion.site/2327d87974bd4b85aac383797a5c7797?v=b01a6aac9ea94ce4b3ba065b3f8d4dae)
 
 
 文件结构:
@@ -75,6 +75,7 @@
 
 
 #### 创建数据库
+- 可以直接从我的网页这里复制过去[notion页面](https://pie-saturday-9af.notion.site/2327d87974bd4b85aac383797a5c7797?v=b01a6aac9ea94ce4b3ba065b3f8d4dae)
 
 ![](./assets/properties.gif)
 
