@@ -5,6 +5,7 @@
 - 本项目通过notion开放的api接口构建影视墙
 - 数据来源为[bangumi](https://bangumi.tv/)与[豆瓣电影](https://movie.douban.com/)
 
+- [notion页面的效果预览](https://pie-saturday-9af.notion.site/2327d87974bd4b85aac383797a5c7797?v=b01a6aac9ea94ce4b3ba065b3f8d4dae)
 
 
 
@@ -75,7 +76,9 @@
 
 
 #### 创建数据库
+直接从我的网站复制过去:[notion数据库页面](https://pie-saturday-9af.notion.site/2327d87974bd4b85aac383797a5c7797?v=b01a6aac9ea94ce4b3ba065b3f8d4dae)
 
+或者自己手动创建
 ![](./assets/properties.gif)
 
 ![](./assets/table-header.png)
